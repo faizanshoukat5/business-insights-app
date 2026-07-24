@@ -1,5 +1,9 @@
 import React from "react";
 import { StyleSheet, Text, useWindowDimensions, View } from "react-native";
+// NOTE: react-native-gifted-charts loads `expo-linear-gradient` at runtime (a
+// required peer dependency it imports internally). It is not referenced directly
+// anywhere in our code, but removing it crashes the app the moment this chart
+// mounts. Keep expo-linear-gradient in package.json.
 import { BarChart } from "react-native-gifted-charts";
 import { Insights } from "../api/endpoints";
 import { colors } from "../theme/colors";
