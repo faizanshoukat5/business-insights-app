@@ -24,6 +24,12 @@
     },
     "plugins": [
       "expo-secure-store"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "121eacb2-81e2-48b6-8bce-4a8452b1e666"
+      }
+    },
+    "owner": "fizu11s-organization"
   }
 }
