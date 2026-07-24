@@ -1,0 +1,379 @@
+{
+  "info": {
+    "_postman_id": "b7f3d2a1-4c8e-4f5a-9d6b-1e2f3a4b5c6d",
+    "name": "Business Insights API",
+    "description": "Postman collection for the Business Insights App backend.\n\nHow to use:\n1. Import this collection into Postman.\n2. (Optional) Change the `base_url` collection variable — it defaults to the live Render deployment. For local development set it to http://localhost:5000.\n3. Run the **Login** request once. Its Tests script automatically stores the JWT into the `token` collection variable.\n4. Run any of the protected requests (Get Business, Get Insights, Get Reviews) — they inherit the collection-level Bearer auth using `{{token}}`.\n\nEvery response (success and error) uses the same envelope: `{ \"success\": boolean, \"message\": string, \"data\": object | array | null }`.\n\nDemo credentials: admin@abcsalon.com / Password123",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "https://business-insights-api.onrender.com",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/health",
+          "host": ["{{base_url}}"],
+          "path": ["health"]
+        },
+        "description": "Public health-check endpoint. No authentication required. Returns the standard envelope with the server uptime (in seconds) in `data.uptime`. Note: on the Render free tier the very first request after idle can take ~50 seconds while the instance cold-starts."
+      },
+      "response": [
+        {
+          "name": "200 OK - API is running",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/health",
+              "host": ["{{base_url}}"],
+              "path": ["health"]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"success\": true,\n  \"message\": \"API is running\",\n  \"data\": {\n    \"uptime\": 1234.56\n  }\n}"
+        }
+      ]
+    },
+    {
+      "name": "Login",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "pm.collectionVariables.set(\"token\", pm.response.json().data.token);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"admin@abcsalon.com\",\n  \"password\": \"Password123\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/login",
+          "host": ["{{base_url}}"],
+          "path": ["login"]
+        },
+        "description": "Public login endpoint. Send the demo credentials (admin@abcsalon.com / Password123) as raw JSON. On success (200) the response contains a JWT in `data.token` — the Tests script on this request automatically saves it into the `token` collection variable, so all protected requests work immediately afterwards.\n\nError cases:\n- 400 when email or password is missing/empty (`\"Email and password are required\"`).\n- 401 when credentials are wrong (`\"Invalid email or password\"`)."
+      },
+      "response": [
+        {
+          "name": "200 OK - Login successful",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@abcsalon.com\",\n  \"password\": \"Password123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/login",
+              "host": ["{{base_url}}"],
+              "path": ["login"]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"success\": true,\n  \"message\": \"Login successful\",\n  \"data\": {\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NGYxYTJiM2M0ZDVlNmY3YThiOWMwZCIsImlhdCI6MTc0MjQ1MDAwMCwiZXhwIjoxNzQyNTM2NDAwfQ.signature\",\n    \"user\": {\n      \"id\": \"664f1a2b3c4d5e6f7a8b9c0d\",\n      \"email\": \"admin@abcsalon.com\"\n    }\n  }\n}"
+        },
+        {
+          "name": "400 Bad Request - Missing fields",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@abcsalon.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/login",
+              "host": ["{{base_url}}"],
+              "path": ["login"]
+            }
+          },
+          "status": "Bad Request",
+          "code": 400,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"success\": false,\n  \"message\": \"Email and password are required\",\n  \"data\": null\n}"
+        },
+        {
+          "name": "401 Unauthorized - Invalid credentials",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@abcsalon.com\",\n  \"password\": \"WrongPassword\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/login",
+              "host": ["{{base_url}}"],
+              "path": ["login"]
+            }
+          },
+          "status": "Unauthorized",
+          "code": 401,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"success\": false,\n  \"message\": \"Invalid email or password\",\n  \"data\": null\n}"
+        }
+      ]
+    },
+    {
+      "name": "Get Business",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/business",
+          "host": ["{{base_url}}"],
+          "path": ["business"]
+        },
+        "description": "Protected endpoint — requires a Bearer JWT (inherited from collection auth via `{{token}}`; run **Login** first). Returns the business profile: id, name, category, address, phone, rating, total_reviews.\n\nWithout a valid token it returns 401 with the standard error envelope."
+      },
+      "response": [
+        {
+          "name": "200 OK - Business profile",
+          "originalRequest": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/business",
+              "host": ["{{base_url}}"],
+              "path": ["business"]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"success\": true,\n  \"message\": \"Business profile fetched successfully\",\n  \"data\": {\n    \"id\": \"664f1a2b3c4d5e6f7a8b9c0e\",\n    \"name\": \"ABC Salon\",\n    \"category\": \"Beauty Salon\",\n    \"address\": \"Hyderabad\",\n    \"phone\": \"9876543210\",\n    \"rating\": 4.2,\n    \"total_reviews\": 120\n  }\n}"
+        },
+        {
+          "name": "401 Unauthorized - Missing or invalid token",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/business",
+              "host": ["{{base_url}}"],
+              "path": ["business"]
+            }
+          },
+          "status": "Unauthorized",
+          "code": 401,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"success\": false,\n  \"message\": \"Unauthorized: token missing or invalid\",\n  \"data\": null\n}"
+        }
+      ]
+    },
+    {
+      "name": "Get Insights",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/insights",
+          "host": ["{{base_url}}"],
+          "path": ["insights"]
+        },
+        "description": "Protected endpoint — requires a Bearer JWT (inherited from collection auth via `{{token}}`; run **Login** first). Returns the business insight metrics: id, profile_views, search_views, website_clicks, phone_calls, direction_requests. These power the dashboard chart in the mobile app.\n\nWithout a valid token it returns 401 with the standard error envelope."
+      },
+      "response": [
+        {
+          "name": "200 OK - Insights",
+          "originalRequest": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/insights",
+              "host": ["{{base_url}}"],
+              "path": ["insights"]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"success\": true,\n  \"message\": \"Insights fetched successfully\",\n  \"data\": {\n    \"id\": \"664f1a2b3c4d5e6f7a8b9c0f\",\n    \"profile_views\": 1200,\n    \"search_views\": 800,\n    \"website_clicks\": 150,\n    \"phone_calls\": 60,\n    \"direction_requests\": 40\n  }\n}"
+        }
+      ]
+    },
+    {
+      "name": "Get Reviews",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/reviews",
+          "host": ["{{base_url}}"],
+          "path": ["reviews"]
+        },
+        "description": "Protected endpoint — requires a Bearer JWT (inherited from collection auth via `{{token}}`; run **Login** first). Returns an array of customer reviews (id, name, rating, comment, date) sorted by date DESCENDING (newest first).\n\nWithout a valid token it returns 401 with the standard error envelope."
+      },
+      "response": [
+        {
+          "name": "200 OK - Reviews (newest first)",
+          "originalRequest": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/reviews",
+              "host": ["{{base_url}}"],
+              "path": ["reviews"]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"success\": true,\n  \"message\": \"Reviews fetched successfully\",\n  \"data\": [\n    {\n      \"id\": \"664f1a2b3c4d5e6f7a8b9c10\",\n      \"name\": \"Ravi\",\n      \"rating\": 5,\n      \"comment\": \"Good service\",\n      \"date\": \"2026-03-20T00:00:00.000Z\"\n    },\n    {\n      \"id\": \"664f1a2b3c4d5e6f7a8b9c11\",\n      \"name\": \"Priya\",\n      \"rating\": 4,\n      \"comment\": \"Nice experience\",\n      \"date\": \"2026-03-18T00:00:00.000Z\"\n    },\n    {\n      \"id\": \"664f1a2b3c4d5e6f7a8b9c12\",\n      \"name\": \"Aisha\",\n      \"rating\": 5,\n      \"comment\": \"Amazing haircut, very professional staff\",\n      \"date\": \"2026-03-15T00:00:00.000Z\"\n    },\n    {\n      \"id\": \"664f1a2b3c4d5e6f7a8b9c13\",\n      \"name\": \"Vikram\",\n      \"rating\": 4,\n      \"comment\": \"Clean place and friendly service\",\n      \"date\": \"2026-03-11T00:00:00.000Z\"\n    },\n    {\n      \"id\": \"664f1a2b3c4d5e6f7a8b9c14\",\n      \"name\": \"Sneha\",\n      \"rating\": 3,\n      \"comment\": \"Good facial but had to wait 20 minutes\",\n      \"date\": \"2026-03-05T00:00:00.000Z\"\n    },\n    {\n      \"id\": \"664f1a2b3c4d5e6f7a8b9c15\",\n      \"name\": \"Rahul\",\n      \"rating\": 5,\n      \"comment\": \"Best salon in the area, highly recommend\",\n      \"date\": \"2026-02-26T00:00:00.000Z\"\n    },\n    {\n      \"id\": \"664f1a2b3c4d5e6f7a8b9c16\",\n      \"name\": \"Meera\",\n      \"rating\": 4,\n      \"comment\": \"Nice ambience, reasonable prices\",\n      \"date\": \"2026-02-14T00:00:00.000Z\"\n    }\n  ]\n}"
+        }
+      ]
+    }
+  ]
+}
