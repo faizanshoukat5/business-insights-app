@@ -191,8 +191,8 @@ Scan the QR code with the **Expo Go** app on your phone.
 
 | Source | Link |
 | --- | --- |
-| Direct APK download | [business-insights-v1.0.0.apk](https://github.com/faizanshoukat5/business-insights-app/releases/download/v1.0.0/business-insights-v1.0.0.apk) |
-| Release page | [v1.0.0](https://github.com/faizanshoukat5/business-insights-app/releases/tag/v1.0.0) |
+| Direct APK download | [business-insights-v1.0.1.apk](https://github.com/faizanshoukat5/business-insights-app/releases/download/v1.0.1/business-insights-v1.0.1.apk) |
+| Latest release | [releases/latest](https://github.com/faizanshoukat5/business-insights-app/releases/latest) |
 
 Build command (EAS):
 
