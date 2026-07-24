@@ -3,6 +3,12 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const { sendSuccess, sendError } = require('../utils/apiResponse');
 
+// A valid bcrypt hash of a random string that matches no real user. When the
+// email is unknown we still run bcrypt.compare against this so the not-found
+// branch takes comparable time to the wrong-password branch, avoiding a
+// user-enumeration timing side-channel.
+const DUMMY_PASSWORD_HASH = '$2a$10$0K5DWj4uOgfESjy.lzWpHOUMe7p20./HyxO4rUAuuvAdpzP6Zf/Pa';
+
 /**
  * POST /login
  */
@@ -19,6 +25,9 @@ const login = async (req, res, next) => {
 
     const user = await User.findOne({ email: normalizedEmail });
     if (!user) {
+      // Compare against a dummy hash so this branch takes comparable time to
+      // the wrong-password branch (mitigates user-enumeration via timing).
+      await bcrypt.compare(password, DUMMY_PASSWORD_HASH);
       return sendError(res, 401, 'Invalid email or password');
     }
 

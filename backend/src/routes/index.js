@@ -5,10 +5,9 @@ const authRoutes = require('./auth.routes');
 const businessRoutes = require('./business.routes');
 const insightsRoutes = require('./insights.routes');
 const reviewsRoutes = require('./reviews.routes');
+const { sendSuccess } = require('../utils/apiResponse');
 
 const router = express.Router();
-
-const { sendSuccess } = require('../utils/apiResponse');
 
 // Friendly index for anyone visiting the bare base URL in a browser.
 router.get('/', (req, res) =>

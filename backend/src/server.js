@@ -3,6 +3,11 @@ require('dotenv').config();
 const app = require('./app');
 const connectDB = require('./config/db');
 
+if (!process.env.JWT_SECRET) {
+  console.error('FATAL: JWT_SECRET is not set');
+  process.exit(1);
+}
+
 const PORT = process.env.PORT || 5000;
 
 const start = async () => {
