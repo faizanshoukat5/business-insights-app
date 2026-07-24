@@ -118,7 +118,7 @@ export default function DashboardScreen() {
         {header}
 
         <View style={styles.grid}>
-          {stats.map((stat) => (
+          {stats.map((stat, index) => (
             <StatCard
               key={stat.label}
               label={stat.label}
@@ -126,6 +126,7 @@ export default function DashboardScreen() {
               icon={stat.icon}
               accent={stat.accent}
               accentTint={stat.accentTint}
+              wide={stats.length % 2 === 1 && index === stats.length - 1}
             />
           ))}
         </View>
