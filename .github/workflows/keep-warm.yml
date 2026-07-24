@@ -1,0 +1,15 @@
+# Pings the Render free-tier backend every 10 minutes so it never spins down
+# and evaluators never hit the ~50s cold start on their first request.
+name: keep-warm
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping /health
+        run: curl -fsS --max-time 90 https://business-insights-api-we6g.onrender.com/health || true
