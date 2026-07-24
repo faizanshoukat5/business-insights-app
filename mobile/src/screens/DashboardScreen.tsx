@@ -7,7 +7,6 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Ionicons } from "@expo/vector-icons";
 import InsightsChart from "../components/InsightsChart";
 import ErrorState from "../components/ErrorState";
 import Loading from "../components/Loading";
@@ -16,10 +15,9 @@ import StatCard from "../components/StatCard";
 import { useBusiness } from "../hooks/useBusiness";
 import { useInsights } from "../hooks/useInsights";
 import { colors } from "../theme/colors";
+import { IoniconName } from "../theme/icons";
 import { spacing } from "../theme/spacing";
 import { typography } from "../theme/typography";
-
-type IoniconName = keyof typeof Ionicons.glyphMap;
 
 export default function DashboardScreen() {
   const insightsQuery = useInsights();
@@ -38,7 +36,12 @@ export default function DashboardScreen() {
     );
   }
 
-  if (insightsQuery.isError) {
+  // Full-screen error only on the INITIAL-load failure (no cached data). A
+  // failed pull-to-refresh keeps the previously-loaded data on screen; the
+  // RefreshControl already reflects the retry and the user can pull again.
+  // businessQuery is intentionally not gated here — insights is primary, so a
+  // business failure degrades gracefully (the header subtitle is optional).
+  if (insightsQuery.isError && !insightsQuery.data) {
     return (
       <SafeAreaView style={styles.safe} edges={["top", "left", "right"]}>
         {header}

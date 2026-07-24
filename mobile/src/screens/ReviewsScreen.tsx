@@ -22,7 +22,9 @@ export default function ReviewsScreen() {
     );
   }
 
-  if (reviewsQuery.isError) {
+  // Full-screen error only on the INITIAL-load failure (no cached data). A
+  // failed pull-to-refresh keeps the existing reviews list on screen.
+  if (reviewsQuery.isError && !reviewsQuery.data) {
     return (
       <SafeAreaView style={styles.safe} edges={["top", "left", "right"]}>
         <ScreenHeader title="Reviews" />

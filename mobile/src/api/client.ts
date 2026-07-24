@@ -68,8 +68,25 @@ client.interceptors.response.use(
     } else {
       message = "Network error. Please check your connection and try again.";
     }
-    return Promise.reject(new Error(message));
+    // Preserve the HTTP status so callers can branch on it (e.g. skip retries
+    // on 401/403).
+    const e = new Error(message);
+    (e as { status?: number }).status = status;
+    return Promise.reject(e);
   }
 );
+
+/**
+ * Typed GET that returns the already-unwrapped `data` payload. The response
+ * interceptor resolves to `body.data`, so the single localized cast lives here.
+ */
+export async function getData<T>(url: string): Promise<T> {
+  return (await client.get(url)) as unknown as T;
+}
+
+/** Typed POST counterpart to {@link getData}. */
+export async function postData<T>(url: string, body: unknown): Promise<T> {
+  return (await client.post(url, body)) as unknown as T;
+}
 
 export default client;

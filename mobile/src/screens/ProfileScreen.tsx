@@ -57,7 +57,9 @@ export default function ProfileScreen() {
     );
   }
 
-  if (businessQuery.isError) {
+  // Full-screen error only on the INITIAL-load failure (no cached data). A
+  // failed pull-to-refresh keeps the existing profile on screen.
+  if (businessQuery.isError && !businessQuery.data) {
     return (
       <SafeAreaView style={styles.safe} edges={["top", "left", "right"]}>
         <ScreenHeader title="Profile" />

@@ -8,7 +8,11 @@ import RootNavigator from "./src/navigation/RootNavigator";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      retry: 2,
+      retry: (failureCount, error) => {
+        const s = (error as { status?: number })?.status;
+        if (s === 401 || s === 403) return false;
+        return failureCount < 2;
+      },
       staleTime: 60_000,
     },
   },
