@@ -60,6 +60,7 @@ All endpoints are mounted at the **root** (no `/api` prefix), per the assignment
 
 | Method | Path | Auth | Description |
 | --- | --- | --- | --- |
+| GET | `/` | No | API index — lists available endpoints. |
 | GET | `/health` | No | Health check — confirms the API is running, returns uptime. |
 | POST | `/login` | No | Authenticate with email + password, returns a JWT and user info. |
 | GET | `/business` | Yes (Bearer JWT) | Business profile: name, category, address, phone, rating, total reviews. |
@@ -175,8 +176,10 @@ Point the app at an API — either set `EXPO_PUBLIC_API_URL` (e.g. to `http://lo
 
 ```bash
 # optional — defaults to https://business-insights-api-we6g.onrender.com
-set EXPO_PUBLIC_API_URL=https://business-insights-api-we6g.onrender.com   # Windows
-# export EXPO_PUBLIC_API_URL=https://business-insights-api-we6g.onrender.com  # macOS/Linux
+# Windows:
+set EXPO_PUBLIC_API_URL=https://business-insights-api-we6g.onrender.com
+# macOS/Linux:
+# export EXPO_PUBLIC_API_URL=https://business-insights-api-we6g.onrender.com
 npx expo start
 ```
 
