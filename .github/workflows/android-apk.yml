@@ -1,0 +1,61 @@
+# android-apk-fallback
+#
+# No-EAS fallback path for producing the release APK.
+# The primary APK build is `eas build -p android --profile preview` (Expo's cloud
+# builder), but EAS requires an Expo account and build-queue time. This workflow
+# builds the same APK entirely on GitHub-hosted runners instead: it prebuilds the
+# native Android project from the Expo config and compiles it with Gradle, then
+# uploads app-release.apk as a workflow artifact.
+#
+# Trigger it manually from the Actions tab (workflow_dispatch) and download the
+# "app-release-apk" artifact when the run finishes.
+
+name: android-apk-fallback
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-apk:
+    runs-on: ubuntu-latest
+    env:
+      # Baked into the app at build time so the APK talks to the live API.
+      EXPO_PUBLIC_API_URL: https://business-insights-api.onrender.com
+    defaults:
+      run:
+        working-directory: mobile
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: mobile/package-lock.json
+
+      - name: Set up JDK (Temurin 17)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate native Android project (expo prebuild)
+        run: npx expo prebuild --platform android --no-install
+
+      - name: Build release APK
+        run: |
+          cd android
+          chmod +x ./gradlew
+          ./gradlew assembleRelease --no-daemon
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release-apk
+          path: mobile/android/app/build/outputs/apk/release/app-release.apk
+          if-no-files-found: error
