@@ -10,13 +10,13 @@
         "buildType": "apk"
       },
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://business-insights-api.onrender.com"
+        "EXPO_PUBLIC_API_URL": "https://business-insights-api-we6g.onrender.com"
       }
     },
     "production": {
       "autoIncrement": true,
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://business-insights-api.onrender.com"
+        "EXPO_PUBLIC_API_URL": "https://business-insights-api-we6g.onrender.com"
       }
     }
   },

@@ -41,7 +41,7 @@ flowchart LR
 
 ## Live API
 
-Base URL: **https://business-insights-api.onrender.com**
+Base URL: **https://business-insights-api-we6g.onrender.com**
 
 > **Note:** the API is hosted on Render's free tier, which spins down after inactivity. The **first request after idle can take ~50 seconds** (cold start). Subsequent requests are fast. Hit `GET /health` first to warm it up.
 
@@ -176,9 +176,9 @@ npm install
 Point the app at an API — either set `EXPO_PUBLIC_API_URL` (e.g. to `http://localhost:5000` for local dev, use your machine's LAN IP if testing on a physical device) or leave it unset to use the default live URL:
 
 ```bash
-# optional — defaults to https://business-insights-api.onrender.com
-set EXPO_PUBLIC_API_URL=https://business-insights-api.onrender.com   # Windows
-# export EXPO_PUBLIC_API_URL=https://business-insights-api.onrender.com  # macOS/Linux
+# optional — defaults to https://business-insights-api-we6g.onrender.com
+set EXPO_PUBLIC_API_URL=https://business-insights-api-we6g.onrender.com   # Windows
+# export EXPO_PUBLIC_API_URL=https://business-insights-api-we6g.onrender.com  # macOS/Linux
 npx expo start
 ```
 

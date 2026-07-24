@@ -18,7 +18,7 @@
   "variable": [
     {
       "key": "base_url",
-      "value": "https://business-insights-api.onrender.com",
+      "value": "https://business-insights-api-we6g.onrender.com",
       "type": "string"
     },
     {

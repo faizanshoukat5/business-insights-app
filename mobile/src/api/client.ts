@@ -8,7 +8,7 @@ export interface ApiEnvelope<T> {
 }
 
 const BASE_URL =
-  process.env.EXPO_PUBLIC_API_URL || "https://business-insights-api.onrender.com";
+  process.env.EXPO_PUBLIC_API_URL || "https://business-insights-api-we6g.onrender.com";
 
 /**
  * Long timeout on purpose: the API lives on Render's free tier and a cold

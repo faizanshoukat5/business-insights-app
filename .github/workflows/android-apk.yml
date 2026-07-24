@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       # Baked into the app at build time so the APK talks to the live API.
-      EXPO_PUBLIC_API_URL: https://business-insights-api.onrender.com
+      EXPO_PUBLIC_API_URL: https://business-insights-api-we6g.onrender.com
     defaults:
       run:
         working-directory: mobile
