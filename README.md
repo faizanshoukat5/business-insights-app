@@ -8,15 +8,13 @@ A full-stack mini "Google Business Profile" style dashboard: a React Native (Exp
 
 ## Screenshots
 
-> Placeholders — screenshots added after first build.
-
-| Login | Dashboard |
-| --- | --- |
-| ![Login](docs/screenshots/login.png) | ![Dashboard](docs/screenshots/dashboard.png) |
+| Login | Dashboard | Insights Chart |
+| --- | --- | --- |
+| <img src="docs/screenshots/login.png" width="240" /> | <img src="docs/screenshots/dashboard.png" width="240" /> | <img src="docs/screenshots/insights.png" width="240" /> |
 
 | Business Profile | Reviews |
 | --- | --- |
-| ![Profile](docs/screenshots/profile.png) | ![Reviews](docs/screenshots/reviews.png) |
+| <img src="docs/screenshots/profile.png" width="240" /> | <img src="docs/screenshots/reviews.png" width="240" /> |
 
 ---
 
