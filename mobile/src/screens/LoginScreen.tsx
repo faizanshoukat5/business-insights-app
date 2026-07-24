@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   ActivityIndicator,
   KeyboardAvoidingView,
@@ -28,6 +28,7 @@ interface FieldErrors {
 
 export default function LoginScreen() {
   const { login } = useAuth();
+  const passwordRef = useRef<TextInput>(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -131,6 +132,10 @@ export default function LoginScreen() {
                   autoCorrect={false}
                   editable={!isSubmitting}
                   accessibilityLabel="Email"
+                  returnKeyType="next"
+                  textContentType="emailAddress"
+                  autoComplete="email"
+                  onSubmitEditing={() => passwordRef.current?.focus()}
                 />
               </View>
               {fieldErrors.email && (
@@ -152,6 +157,7 @@ export default function LoginScreen() {
                   color={colors.textSecondary}
                 />
                 <TextInput
+                  ref={passwordRef}
                   style={styles.input}
                   value={password}
                   onChangeText={(text) => {
@@ -170,6 +176,10 @@ export default function LoginScreen() {
                   autoCorrect={false}
                   editable={!isSubmitting}
                   accessibilityLabel="Password"
+                  returnKeyType="go"
+                  textContentType="password"
+                  autoComplete="password"
+                  onSubmitEditing={handleSubmit}
                 />
                 <TouchableOpacity
                   onPress={() => setShowPassword((visible) => !visible)}

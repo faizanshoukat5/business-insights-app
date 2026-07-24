@@ -30,5 +30,3 @@ export const colors = {
 
   star: "#F59E0B",
 } as const;
-
-export type AppColor = keyof typeof colors;

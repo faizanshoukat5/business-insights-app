@@ -2,11 +2,10 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../theme/colors";
+import { IoniconName } from "../theme/icons";
 import { spacing } from "../theme/spacing";
 import { typography } from "../theme/typography";
 import { formatNumber } from "../utils/format";
-
-type IoniconName = keyof typeof Ionicons.glyphMap;
 
 interface StatCardProps {
   label: string;
@@ -30,7 +29,11 @@ export default function StatCard({
 }: StatCardProps) {
   if (wide) {
     return (
-      <View style={[styles.card, styles.cardWide]}>
+      <View
+        style={[styles.card, styles.cardWide]}
+        accessible
+        accessibilityLabel={`${label}: ${formatNumber(value)}`}
+      >
         <View
           style={[
             styles.iconCircle,
@@ -49,7 +52,11 @@ export default function StatCard({
   }
 
   return (
-    <View style={styles.card}>
+    <View
+      style={styles.card}
+      accessible
+      accessibilityLabel={`${label}: ${formatNumber(value)}`}
+    >
       <View style={[styles.iconCircle, { backgroundColor: accentTint }]}>
         <Ionicons name={icon} size={20} color={accent} />
       </View>

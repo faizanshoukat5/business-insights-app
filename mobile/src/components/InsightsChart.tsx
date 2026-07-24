@@ -58,8 +58,22 @@ export default function InsightsChart({ insights }: InsightsChartProps) {
 
   const maxValue = niceMax(Math.max(...values.map((item) => item.value)));
 
+  // The chart itself is opaque to screen readers, so expose a spoken summary of
+  // every metric on the wrapping view.
+  const accessibilityLabel =
+    "Insights overview chart: " +
+    `Profile Views ${insights.profile_views}, ` +
+    `Search Views ${insights.search_views}, ` +
+    `Website Clicks ${insights.website_clicks}, ` +
+    `Phone Calls ${insights.phone_calls}, ` +
+    `Direction Requests ${insights.direction_requests}`;
+
   return (
-    <View style={styles.container}>
+    <View
+      style={styles.container}
+      accessible
+      accessibilityLabel={accessibilityLabel}
+    >
       <BarChart
         data={data}
         width={plotWidth}

@@ -1,4 +1,4 @@
-import client from "./client";
+import { getData, postData } from "./client";
 
 export interface User {
   id: string;
@@ -37,25 +37,21 @@ export interface Review {
   date: string;
 }
 
-// The response interceptor in client.ts unwraps the envelope, so each call
-// resolves directly to the `data` payload (hence the double cast).
+// The response interceptor in client.ts unwraps the envelope, so getData/postData
+// resolve directly to the typed `data` payload.
 
 export async function login(email: string, password: string): Promise<LoginResponse> {
-  const data = await client.post("/login", { email, password });
-  return data as unknown as LoginResponse;
+  return postData<LoginResponse>("/login", { email, password });
 }
 
 export async function getBusiness(): Promise<Business> {
-  const data = await client.get("/business");
-  return data as unknown as Business;
+  return getData<Business>("/business");
 }
 
 export async function getInsights(): Promise<Insights> {
-  const data = await client.get("/insights");
-  return data as unknown as Insights;
+  return getData<Insights>("/insights");
 }
 
 export async function getReviews(): Promise<Review[]> {
-  const data = await client.get("/reviews");
-  return data as unknown as Review[];
+  return getData<Review[]>("/reviews");
 }

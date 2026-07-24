@@ -2,10 +2,9 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../theme/colors";
+import { IoniconName } from "../theme/icons";
 import { spacing } from "../theme/spacing";
 import { typography } from "../theme/typography";
-
-type IoniconName = keyof typeof Ionicons.glyphMap;
 
 interface EmptyStateProps {
   icon?: IoniconName;
