@@ -18,6 +18,16 @@ A full-stack mini "Google Business Profile" style dashboard: a React Native (Exp
 
 ---
 
+## Demo Video
+
+A walkthrough of login, dashboard insights + chart, business profile, and reviews:
+
+https://github.com/user-attachments/assets/2d35d6a6-e470-4023-b714-6d0a7d259de7
+
+> Also available on [Google Drive](https://drive.google.com/file/d/1_PtVDyDZAZK6Elipp0GfGDMlegTdj3jF/view?usp=sharing).
+
+---
+
 ## Features
 
 - **4 screens** — Login, Dashboard (insights), Business Profile, Reviews.
@@ -211,16 +221,6 @@ A no-EAS fallback build is available as a GitHub Actions workflow (`.github/work
 1. Import `postman/BusinessInsights.postman_collection.json` into Postman.
 2. Run the **Login** request once — its test script auto-captures the JWT into the `token` collection variable.
 3. That's it — **Get Business**, **Get Insights**, and **Get Reviews** inherit the collection-level Bearer auth and just work. Switch `base_url` to `http://localhost:5000` for local testing.
-
----
-
-## Demo Video
-
-A walkthrough of login, dashboard insights + chart, business profile, and reviews:
-
-https://github.com/user-attachments/assets/2d35d6a6-e470-4023-b714-6d0a7d259de7
-
-> Also available on [Google Drive](https://drive.google.com/file/d/1_PtVDyDZAZK6Elipp0GfGDMlegTdj3jF/view?usp=sharing).
 
 ---
 
