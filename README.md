@@ -216,7 +216,11 @@ A no-EAS fallback build is available as a GitHub Actions workflow (`.github/work
 
 ## Demo Video
 
-▶️ **[Watch the demo walkthrough](https://drive.google.com/file/d/1_PtVDyDZAZK6Elipp0GfGDMlegTdj3jF/view?usp=sharing)** — login, dashboard insights + chart, business profile, and reviews.
+A walkthrough of login, dashboard insights + chart, business profile, and reviews:
+
+https://github.com/user-attachments/assets/2d35d6a6-e470-4023-b714-6d0a7d259de7
+
+> Also available on [Google Drive](https://drive.google.com/file/d/1_PtVDyDZAZK6Elipp0GfGDMlegTdj3jF/view?usp=sharing).
 
 ---
 
